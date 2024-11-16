@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-to-Audio Converter</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Text-to-Audio Converter</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput">
+        <button type="submit">Upload and Extract Text</button>
+    </form>
+    <textarea id="textInput" placeholder="Extracted text will appear here..."></textarea>
+    <select id="speedSelect">
+        <option value="1.0">1x</option>
+        <option value="1.5">1.5x</option>
+        <option value="2.0">2x</option>
+    </select>
+    <button id="playButton">Play</button>
+    <button id="pauseButton">Pause</button>
+    <button id="resumeButton">Resume</button>
+    <button id="stopButton">Stop</button>
+
+    <script>
+        document.getElementById('playButton').addEventListener('click', () => {
+            const text = document.getElementById('textInput').value;
+            const speed = document.getElementById('speedSelect').value;
+
+            fetch('/play_text', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text, speed })
+            });
+        });
+
+        document.getElementById('pauseButton').addEventListener('click', () => {
+            fetch('/pause', { method: 'POST' });
+        });
+
+        document.getElementById('resumeButton').addEventListener('click', () => {
+            fetch('/resume', { method: 'POST' });
+        });
+
+        document.getElementById('stopButton').addEventListener('click', () => {
+            fetch('/stop', { method: 'POST' });
+        });
+    </script>
+</body>
+</html>
